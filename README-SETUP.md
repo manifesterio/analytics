@@ -14,7 +14,7 @@ This guide will help you set up the local development environment for the Analyt
 ### 1. Start the Database
 
 ```bash
-# Start PostgreSQL containers
+# Start MySQL containers
 docker-compose up -d
 
 # Verify containers are running
@@ -52,13 +52,13 @@ The application supports three environments:
 
 ### Development Environment
 
-- Database: `analytics_dev` on `localhost:5432`
+- Database: `analytics_dev` on `localhost:3306`
 - Logging: DEBUG level with console and file output
 - SQL queries logged to console
 
 ### Test Environment
 
-- Database: `analytics_test` on `localhost:5433`
+- Database: `analytics_test` on `localhost:3307`
 - Logging: INFO level, minimal console output
 - Optimized for test execution
 
@@ -98,7 +98,7 @@ docker-compose up -d
 docker-compose down
 
 # View logs
-docker-compose logs -f postgres
+docker-compose logs -f mysql
 
 # Reset database (removes all data)
 docker-compose down -v
@@ -116,7 +116,7 @@ docker-compose up -d
 
 2. Check database connectivity:
    ```bash
-   docker-compose exec postgres psql -U analytics_user -d analytics_dev -c "SELECT 1;"
+   docker-compose exec mysql mysql -u analytics_user -panalytics_password -e "SELECT 1;"
    ```
 
 ### Application Startup Issues
@@ -128,16 +128,16 @@ docker-compose up -d
 
 2. Verify database migrations:
    ```bash
-   docker-compose exec postgres psql -U analytics_user -d analytics_dev -c "\dt"
+   docker-compose exec mysql mysql -u analytics_user -panalytics_password -e "SHOW TABLES;"
    ```
 
 ### Port Conflicts
 
-If port 5432 is already in use, modify the port mapping in `docker-compose.yml`:
+If port 3306 is already in use, modify the port mapping in `docker-compose.yml`:
 
 ```yaml
 ports:
-  - "5434:5432"  # Change 5432 to 5434
+  - "3308:3306"  # Change 3306 to 3308
 ```
 
 Then update the database URL in `application.yml` accordingly.
@@ -152,9 +152,6 @@ The project uses JaCoCo for code coverage analysis:
 ./scripts/coverage.sh
 
 # Or using Maven directly
-mvn clean test jacoco:report
-
-# Using Maven profile
 mvn clean test -Pcoverage
 ```
 
@@ -171,9 +168,6 @@ The project enforces minimum coverage thresholds:
 ### Check Coverage Thresholds
 ```bash
 # Check if coverage meets minimum thresholds
-mvn jacoco:check
-
-# Or using Maven profile
 mvn test -Pcoverage-check
 ```
 

@@ -6,8 +6,8 @@ set -e
 
 echo "🧪 Running tests with JaCoCo coverage analysis..."
 
-# Run tests with coverage
-mvn clean test jacoco:report
+# Run tests with coverage using the coverage profile
+mvn clean test -Pcoverage
 
 echo ""
 echo "✅ Coverage report generated successfully!"
@@ -58,4 +58,4 @@ echo "🌐 To view the HTML report:"
 echo "  open target/site/jacoco/index.html"
 echo ""
 echo "🔍 To check coverage thresholds:"
-echo "  mvn jacoco:check"
+echo "  mvn test -Pcoverage-check"

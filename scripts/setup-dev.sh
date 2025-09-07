@@ -14,8 +14,8 @@ fi
 
 echo "✅ Docker is running"
 
-# Start PostgreSQL containers
-echo "🐘 Starting PostgreSQL containers..."
+# Start MySQL containers
+echo "🐘 Starting MySQL containers..."
 docker-compose up -d
 
 # Wait for database to be ready
@@ -23,7 +23,7 @@ echo "⏳ Waiting for database to be ready..."
 sleep 10
 
 # Check if containers are healthy
-if docker-compose ps | grep -q "Up (healthy)"; then
+if docker-compose ps | grep -q "healthy"; then
     echo "✅ Database containers are healthy"
 else
     echo "⚠️  Database containers may not be fully ready yet"
